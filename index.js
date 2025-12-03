@@ -11,13 +11,14 @@ app.get('/', (req, res) => {
 });
 
 io.on("connection", (socket) => {
-    console.log("a user connected");
+    console.log("a user connected",socket.id);
 
     socket.on("message", (data) => {
         console.log("message received:", data);
 
 
-        socket.emit("reply", "Message received by server");
+        io.emit("reply", data);
+        //socket.emit("reply", "Message received by server");  // to send back to the same client only
     });
 });
 
