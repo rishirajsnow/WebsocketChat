@@ -31,41 +31,43 @@
             margin: 0.25rem;
         }
 
-        #input:focus {
-            outline: none;
-        }
-
-        #form>button {
-            background: #333;
-            border: none;
-            padding: 0 1rem;
-            margin: 0.25rem;
-            border-radius: 3px;
-            outline: none;
-            color: #fff;
-        }
-
         #messages {
             list-style-type: none;
-            margin: 0;
+            margin: 10px;
             padding: 0;
-        }
-
-        #messages>li {
-            padding: 0.5rem 1rem;
-        }
-
-        #messages>li:nth-child(odd) {
-            background: #efefef;
         }
     </style>
 </head>
 
 <body>
-    <ul id="messages"></ul>
+    <h1>Whats up!s</h1>
+    <input type="text" id="input" placeholder="Enter message" />
+    <button id="sendBtn">Send</button>
+    <div id="messages"></div>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+        const socket=io();
+
+        socket.on("reply",(data)=>{
+            console.log("Message from server:",data);
+            const messages=document.getElementById("messages");
+            messages.appendChild(document.createElement("div")).innerText=data;
+        })
+
+        const input=document.getElementById('input');
+        const sendBtn=document.getElementById('sendBtn');
+        const messages=document.getElementById("messages");
+        
+        sendBtn.addEventListener("click",(e)=>{
+            const message=input.value;
+            socket.emit("message",message);
+        })  
+    </script>
+    <!-- <ul id="messages"></ul>
     <form id="form" action="">
         <input id="input" autocomplete="off" /><button>Send</button>
-    </form>
+    </form> -->
 </body>
 
 </html>
